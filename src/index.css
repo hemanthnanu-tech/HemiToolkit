@@ -102,36 +102,19 @@ html.light body::before {
   border: 1px solid var(--glass-border);
   position: relative;
   overflow: hidden;
-  transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-              background-color 0.4s, 
-              transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .tool-card:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.05) inset;
-  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(59, 130, 246, 0.4);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
   z-index: 10;
 }
 
 html.light .tool-card:hover {
-  border-color: rgba(9, 9, 11, 0.2);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0,0,0,0.02) inset;
-}
-
-.card-glare {
-  position: absolute;
-  width: 150%;
-  height: 150%;
-  top: -25%;
-  left: -25%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08) 0%, transparent 70%);
-  opacity: 0;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-  transition: opacity 0.3s;
-  transform: translateZ(1px);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
 }
 
 /* --- A4 DOCUMENT SIMULATION --- */

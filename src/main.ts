@@ -1,6 +1,7 @@
 import './index.css';
 import { ToolCategory, ToolDefinition, ApplicationState } from './types';
 import { htmlToPdfTool } from './tools/htmlToPdf';
+import { latexToPdfTool } from './tools/latexToPdf';
 import { pdfProcessorTools } from './tools/pdfProcessor';
 import { imageProcessorTools } from './tools/imageProcessor';
 import { utilityTools } from './tools/utilities';
@@ -10,6 +11,10 @@ const toolsUIAndHandlers: { [key: string]: { ui: () => string; init: () => void;
   'html-to-pdf': {
     ui: htmlToPdfTool.renderUI,
     init: htmlToPdfTool.init
+  },
+  'latex-pdf': {
+    ui: latexToPdfTool.renderUI,
+    init: latexToPdfTool.init
   },
   ...pdfProcessorTools,
   ...imageProcessorTools,
@@ -33,7 +38,7 @@ const categories: ToolCategory[] = [
 ];
 
 const tools: ToolDefinition[] = [
-  { id: 'html-to-pdf', cat: 'convert', title: 'HTML to PDF', desc: 'Saves clean HTML sheets directly to high quality Vector PDF files.', icon: 'fa-brands fa-html5', color: 'bg-orange-600' },
+  { id: 'latex-pdf', cat: 'convert', title: 'LaTeX to PDF', desc: 'Render complex mathematical LaTeX into high quality Vector PDF files.', icon: 'fa-solid fa-square-root-variable', color: 'bg-purple-600' },
   { id: 'pdf-merge', cat: 'organize', title: 'Merge PDFs', desc: 'Combine multiple PDF files into a single structured document.', icon: 'fa-solid fa-layer-group', color: 'bg-rose-500' },
   { id: 'pdf-split', cat: 'organize', title: 'Split PDF', desc: 'Separate customized page ranges as independent documents.', icon: 'fa-solid fa-scissors', color: 'bg-orange-500' },
   { id: 'compress-pdf', cat: 'organize', title: 'Compress PDF', desc: 'Optimize image structures to drastically reduce file sizes.', icon: 'fa-solid fa-file-zipper', color: 'bg-green-600' },
@@ -47,6 +52,7 @@ const tools: ToolDefinition[] = [
   { id: 'sign-pdf', cat: 'edit', title: 'Sign Documents', desc: 'Embed handwritten digital signatures onto first page vectors.', icon: 'fa-solid fa-signature', color: 'bg-emerald-600' },
   { id: 'pdf-rotate', cat: 'edit', title: 'Rotate Sheets', desc: 'Fix page orientation rotations in multi-angled segments.', icon: 'fa-solid fa-rotate-right', color: 'bg-indigo-600' },
   { id: 'pdf-numbers', cat: 'edit', title: 'Page Numbers', desc: 'Add clean pagination text footers to matching pages.', icon: 'fa-solid fa-list-ol', color: 'bg-violet-600' },
+  { id: 'html-to-pdf', cat: 'convert', title: 'HTML to PDF', desc: 'Saves clean HTML sheets directly to high quality Vector PDF files.', icon: 'fa-brands fa-html5', color: 'bg-orange-600' },
   { id: 'pdf-watermark', cat: 'edit', title: 'Watermark', desc: 'Apply oblique overlays with customizable text settings.', icon: 'fa-solid fa-stamp', color: 'bg-cyan-600' },
   { id: 'pdf-meta', cat: 'edit', title: 'PDF Metadata', desc: 'Configure document title, authors and reference keywords.', icon: 'fa-solid fa-tag', color: 'bg-pink-600' },
   { id: 'protect-pdf', cat: 'security', title: 'Protect PDF', desc: 'Apply 128-bit AES password encryption permissions key.', icon: 'fa-solid fa-lock', color: 'bg-slate-600' },
@@ -267,10 +273,6 @@ function renderDashboard(filter = 'all') {
 
   container.innerHTML = filtered.map(t => `
     <div data-tool-id="${t.id}" class="tool-card p-6 rounded-3xl cursor-pointer flex flex-col h-full group min-h-[220px] relative overflow-hidden">
-      <!-- Ambient Glow Spot -->
-      <div class="absolute -right-4 -top-4 w-24 h-24 bg-sky-500/5 dark:bg-sky-500/10 blur-3xl rounded-full group-hover:scale-150 transition-transform duration-700 pointer-events-none"></div>
-      
-      <div class="card-glare"></div>
       <div class="flex items-start justify-between mb-5 relative z-10">
         <div class="w-12 h-12 rounded-2xl ${t.color} flex items-center justify-center text-white text-xl shadow-xl">
           <i class="${t.icon}"></i>
@@ -363,10 +365,6 @@ function configureSearch() {
     if (filtered.length > 0) {
       container.innerHTML = filtered.map(t => `
         <div data-tool-id="${t.id}" class="tool-card p-6 rounded-3xl cursor-pointer flex flex-col h-full group min-h-[220px] relative overflow-hidden">
-          <!-- Ambient Glow Spot -->
-          <div class="absolute -right-4 -top-4 w-24 h-24 bg-sky-500/5 dark:bg-sky-500/10 blur-3xl rounded-full group-hover:scale-150 transition-transform duration-700 pointer-events-none"></div>
-
-          <div class="card-glare"></div>
           <div class="flex items-start justify-between mb-5 relative z-10">
             <div class="w-12 h-12 rounded-2xl ${t.color} flex items-center justify-center text-white text-xl shadow-xl">
               <i class="${t.icon}"></i>
