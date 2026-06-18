@@ -290,12 +290,28 @@ function renderDashboard(filter = 'all') {
     };
   });
 
-  if (typeof window.gsap !== 'undefined') {
-    window.gsap.fromTo(".tool-card", 
-      { opacity: 0, y: 30 }, 
-      { opacity: 1, y: 0, duration: 0.5, stagger: 0.02, ease: "power3.out" }
-    );
-  }
+  // Scroll-triggered random pop-up animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting && !entry.target.classList.contains('animated-in')) {
+        entry.target.classList.add('animated-in');
+        if (typeof window.gsap !== 'undefined') {
+          const delay = Math.random() * 0.25; // Random stagger for organic popup
+          window.gsap.fromTo(entry.target, 
+            { opacity: 0, y: 50, scale: 0.9 }, 
+            { opacity: 1, y: 0, scale: 1, duration: 0.6, delay: delay, ease: "back.out(1.4)" }
+          );
+        } else {
+          (entry.target as HTMLElement).style.opacity = '1';
+        }
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.tool-card').forEach(card => {
+    (card as HTMLElement).style.opacity = '0';
+    observer.observe(card);
+  });
 }
 
 // Interactive glare effect on grid mouse actions (without 3D tilt/bending)
