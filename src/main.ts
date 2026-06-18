@@ -1,7 +1,6 @@
 import './index.css';
 import { ToolCategory, ToolDefinition, ApplicationState } from './types';
 import { htmlToPdfTool } from './tools/htmlToPdf';
-import { latexToPdfTool } from './tools/latexToPdf';
 import { pdfProcessorTools } from './tools/pdfProcessor';
 import { imageProcessorTools } from './tools/imageProcessor';
 import { utilityTools } from './tools/utilities';
@@ -11,10 +10,6 @@ const toolsUIAndHandlers: { [key: string]: { ui: () => string; init: () => void;
   'html-to-pdf': {
     ui: htmlToPdfTool.renderUI,
     init: htmlToPdfTool.init
-  },
-  'latex-pdf': {
-    ui: latexToPdfTool.renderUI,
-    init: latexToPdfTool.init
   },
   ...pdfProcessorTools,
   ...imageProcessorTools,
@@ -38,7 +33,6 @@ const categories: ToolCategory[] = [
 ];
 
 const tools: ToolDefinition[] = [
-  { id: 'latex-pdf', cat: 'convert', title: 'LaTeX to PDF', desc: 'Render complex mathematical LaTeX into high quality Vector PDF files.', icon: 'fa-solid fa-square-root-variable', color: 'bg-purple-600' },
   { id: 'pdf-merge', cat: 'organize', title: 'Merge PDFs', desc: 'Combine multiple PDF files into a single structured document.', icon: 'fa-solid fa-layer-group', color: 'bg-rose-500' },
   { id: 'pdf-split', cat: 'organize', title: 'Split PDF', desc: 'Separate customized page ranges as independent documents.', icon: 'fa-solid fa-scissors', color: 'bg-orange-500' },
   { id: 'compress-pdf', cat: 'organize', title: 'Compress PDF', desc: 'Optimize image structures to drastically reduce file sizes.', icon: 'fa-solid fa-file-zipper', color: 'bg-green-600' },
