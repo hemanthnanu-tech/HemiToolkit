@@ -1,19 +1,42 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+  <h1 align="center">Hemi Toolkit</h1>
+  <p align="center">
+    <strong>The Ultimate Web Utility Suite for Developers & Professionals</strong>
+  </p>
 </div>
 
-# Run and deploy your AI Studio app
+## Overview
 
-This contains everything you need to run your app locally.
-https://ai.studio/apps/0438227e-9fa0-46c8-aa41-60af888883fe
+**Hemi Toolkit** is a powerful, offline-first web utility platform designed to handle your everyday tasks with unparalleled speed and security. Because all tools are executed entirely on the client-side within your browser, your files and data never leave your device, ensuring complete privacy.
+
+### Key Features
+- 📄 **PDF Processing:** Merge, split, compress, watermark, rotate, paginate, protect, and unlock PDFs natively.
+- 🖼️ **Image Manipulation:** Compress PNGs/JPGs/WEBPs and convert formats without relying on a server.
+- 🧮 **Format Converters:** Convert complex HTML code or Mathematical LaTeX equations directly into pristine Vector PDFs.
+- 🛠️ **Developer Utilities:** Base64 Encoding/Decoding, Live Regex Testing, JSON formatters, Markdown Previewers, Code Text Diffs, and Lorem Ipsum generators.
+- 🔐 **Security:** Cryptographically secure password generators and AES PDF encryption.
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js
 
+1. Clone this repository and install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the local development server:
+   ```bash
+   npm run dev
+   ```
+3. Open the provided `localhost` link in your browser to access the toolkit.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Building for Production
+
+To create an optimized, minified production build:
+```bash
+npm run build
+```
+This will compile all assets into the `dist/` directory, ready to be hosted on any static file server like GitHub Pages, Vercel, or Netlify.
+
+---
+*Designed & Developed by Hemanth Kumar K*
