@@ -54,7 +54,12 @@ const tools: ToolDefinition[] = [
   { id: 'pass-gen', cat: 'security', title: 'Password Gen', desc: 'Generate highly custom cryptographic keys.', icon: 'fa-solid fa-key', color: 'bg-red-600' },
   { id: 'json-fmt', cat: 'util', title: 'JSON Tools', desc: 'Format, beautify or compress raw JSON payload strings.', icon: 'fa-solid fa-code', color: 'bg-yellow-500' },
   { id: 'qr-gen', cat: 'util', title: 'QR Generator', desc: 'Create standard High corrective density 2D code blocks.', icon: 'fa-solid fa-qrcode', color: 'bg-gray-500' },
-  { id: 'color-tool', cat: 'util', title: 'Color Picker', desc: 'Direct access palette values across HEX, RGB formats.', icon: 'fa-solid fa-eye-dropper', color: 'bg-lime-600' }
+  { id: 'color-tool', cat: 'util', title: 'Color Picker', desc: 'Direct access palette values across HEX, RGB formats.', icon: 'fa-solid fa-eye-dropper', color: 'bg-lime-600' },
+  { id: 'base64-tool', cat: 'util', title: 'Base64 Engine', desc: 'Encode or decode plain text strings into Base64 format.', icon: 'fa-solid fa-shield-halved', color: 'bg-indigo-500' },
+  { id: 'regex-tester', cat: 'util', title: 'Regex Tester', desc: 'Live regular expression testing with matching highlighting.', icon: 'fa-solid fa-asterisk', color: 'bg-fuchsia-600' },
+  { id: 'lorem-gen', cat: 'util', title: 'Lorem Ipsum', desc: 'Generate customized dummy placeholder text paragraphs.', icon: 'fa-solid fa-paragraph', color: 'bg-amber-600' },
+  { id: 'markdown-view', cat: 'edit', title: 'MD Preview', desc: 'Real-time Markdown editor with styled HTML rendering.', icon: 'fa-brands fa-markdown', color: 'bg-sky-600' },
+  { id: 'text-diff', cat: 'edit', title: 'Text Diff', desc: 'Compare text blocks to highlight added or removed strings.', icon: 'fa-solid fa-code-compare', color: 'bg-rose-500' }
 ];
 
 // Theme Switcher manager module
@@ -113,16 +118,18 @@ const router = {
     if (typeof window.gsap !== 'undefined') {
       window.gsap.to(toolView, {
         opacity: 0,
+        y: 10,
         duration: 0.25,
+        ease: "power2.in",
         onComplete: () => {
           toolView.classList.add('hidden');
           workspace.innerHTML = '';
           dashboard.classList.remove('hidden');
-          window.gsap.to(dashboard, { opacity: 1, duration: 0.25 });
+          window.gsap.fromTo(dashboard, { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
           
           window.gsap.fromTo(".tool-card", 
             { opacity: 0, scale: 0.95, y: 15 }, 
-            { opacity: 1, scale: 1, y: 0, duration: 0.35, stagger: 0.02, ease: "back.out(1.1)" }
+            { opacity: 1, scale: 1, y: 0, duration: 0.4, stagger: 0.015, ease: "back.out(1.2)" }
           );
         }
       });
@@ -168,11 +175,13 @@ const router = {
     if (typeof window.gsap !== 'undefined') {
       window.gsap.to(dashboard, {
         opacity: 0,
+        y: -10,
         duration: 0.25,
+        ease: "power2.in",
         onComplete: () => {
           dashboard.classList.add('hidden');
           toolView.classList.remove('hidden');
-          window.gsap.to(toolView, { opacity: 1, duration: 0.25 });
+          window.gsap.fromTo(toolView, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" });
           
           if (handler) {
             handler.init();

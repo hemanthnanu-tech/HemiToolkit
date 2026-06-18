@@ -10,6 +10,7 @@ declare global {
     saveAs: (blob: Blob, name: string) => void;
     confetti: any;
     gsap: any;
+    marked: any;
   }
 }
 
@@ -69,6 +70,11 @@ export async function loadQRious(): Promise<any> {
 export async function loadSignaturePad(): Promise<any> {
   await loadScript('https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js');
   return window.SignaturePad;
+}
+
+export async function loadMarked(): Promise<any> {
+  await loadScript('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
+  return window.marked;
 }
 
 // Debounce helper for input handlers

@@ -1,4 +1,4 @@
-import { loadQRious } from '../utils';
+import { loadQRious, loadMarked } from '../utils';
 
 function notifySuccess(title: string, desc: string) {
   (window as any).Swal.fire({
@@ -318,5 +318,253 @@ export const utilityTools = {
         };
       }
     }
+  },
+
+  // --- BASE64 ENCODER / DECODER ---
+  'base64-tool': {
+    ui(): string {
+      return `
+        <div class="flex flex-col md:flex-row gap-6 h-[500px] animate-fade-in-up">
+          <div class="flex-1 flex flex-col">
+            <div class="flex justify-between items-center mb-2">
+              <label class="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Plain Text</label>
+              <button id="b64-clear1" class="text-xs text-red-400 hover:text-red-300 font-semibold transition-colors">Clear</button>
+            </div>
+            <textarea id="b64-text" class="glass-input flex-1 w-full p-4 rounded-xl font-mono text-sm resize-none" placeholder="Type plain text here..."></textarea>
+          </div>
+          <div class="flex flex-row md:flex-col justify-center gap-4">
+            <button id="b64-enc" class="p-4 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 hover:scale-110 active:scale-95 transition-all shadow-lg font-bold" title="Encode to Base64"><i class="fa-solid fa-arrow-right md:rotate-0 rotate-90"></i></button>
+            <button id="b64-dec" class="p-4 rounded-xl glass-panel hover:bg-white/10 hover:scale-110 active:scale-95 transition-all font-bold" title="Decode from Base64"><i class="fa-solid fa-arrow-left md:rotate-0 rotate-90"></i></button>
+          </div>
+          <div class="flex-1 flex flex-col">
+            <div class="flex justify-between items-center mb-2">
+              <label class="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Base64 String</label>
+              <button id="b64-clear2" class="text-xs text-red-400 hover:text-red-300 font-semibold transition-colors">Clear</button>
+            </div>
+            <textarea id="b64-hash" class="glass-input flex-1 w-full p-4 rounded-xl font-mono text-sm resize-none bg-black/10 dark:bg-black/25" placeholder="Base64 encoded string..."></textarea>
+          </div>
+        </div>
+      `;
+    },
+    init() {
+      const textIn = document.getElementById('b64-text') as HTMLTextAreaElement;
+      const hashIn = document.getElementById('b64-hash') as HTMLTextAreaElement;
+      const btnEnc = document.getElementById('b64-enc') as HTMLButtonElement;
+      const btnDec = document.getElementById('b64-dec') as HTMLButtonElement;
+
+      btnEnc.onclick = () => {
+        try { hashIn.value = btoa(textIn.value); } 
+        catch (e) { (window as any).Swal.fire({icon:'error', title: 'Encoding Failed', text: 'Invalid characters detected'}); }
+      };
+      btnDec.onclick = () => {
+        try { textIn.value = atob(hashIn.value); } 
+        catch (e) { (window as any).Swal.fire({icon:'error', title: 'Decoding Failed', text: 'Invalid Base64 string'}); }
+      };
+      document.getElementById('b64-clear1')!.onclick = () => textIn.value = '';
+      document.getElementById('b64-clear2')!.onclick = () => hashIn.value = '';
+    }
+  },
+
+  // --- REGEX TESTER ---
+  'regex-tester': {
+    ui(): string {
+      return `
+        <div class="max-w-4xl mx-auto space-y-6 animate-fade-in-up">
+          <div class="glass-panel p-6 rounded-3xl space-y-4">
+            <label class="block text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Regular Expression</label>
+            <div class="flex items-center gap-3">
+              <span class="text-2xl text-[var(--text-secondary)] font-mono">/</span>
+              <input type="text" id="re-pattern" class="glass-input flex-1 p-4 rounded-xl font-mono text-lg text-blue-400" placeholder="[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}" value="[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}">
+              <span class="text-2xl text-[var(--text-secondary)] font-mono">/</span>
+              <input type="text" id="re-flags" class="glass-input w-24 p-4 rounded-xl font-mono text-lg text-fuchsia-400 text-center" placeholder="gi" value="gi">
+            </div>
+          </div>
+          <div class="flex flex-col md:flex-row gap-6">
+            <div class="flex-1 space-y-4">
+              <label class="block text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Test String</label>
+              <textarea id="re-test" class="glass-input w-full h-64 p-4 rounded-xl font-mono text-sm resize-none" placeholder="Enter text to test against the regex..."></textarea>
+            </div>
+            <div class="flex-1 space-y-4">
+              <label class="block text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider flex justify-between">
+                <span>Match Results</span>
+                <span id="re-count" class="text-fuchsia-400">0 matches</span>
+              </label>
+              <div id="re-result" class="glass-panel w-full h-64 p-4 rounded-xl font-mono text-sm overflow-y-auto whitespace-pre-wrap leading-relaxed text-[var(--text-primary)]"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    },
+    init() {
+      const pattern = document.getElementById('re-pattern') as HTMLInputElement;
+      const flags = document.getElementById('re-flags') as HTMLInputElement;
+      const testText = document.getElementById('re-test') as HTMLTextAreaElement;
+      const result = document.getElementById('re-result') as HTMLElement;
+      const count = document.getElementById('re-count') as HTMLElement;
+
+      const updateMatch = () => {
+        if (!pattern.value) {
+          result.innerHTML = testText.value;
+          count.innerText = '0 matches';
+          return;
+        }
+        try {
+          const re = new RegExp(pattern.value, flags.value);
+          const txt = testText.value;
+          
+          if (!re.global) {
+             const m = txt.match(re);
+             const matchCount = m ? 1 : 0;
+             result.innerHTML = txt.replace(re, (match) => `<span class="bg-fuchsia-500/30 text-fuchsia-300 rounded px-1">\${match}</span>`);
+             count.innerText = `\${matchCount} matches`;
+          } else {
+             const matches = txt.match(re);
+             const matchCount = matches ? matches.length : 0;
+             result.innerHTML = txt.replace(re, (match) => `<span class="bg-fuchsia-500/30 text-fuchsia-300 rounded px-1">\${match}</span>`);
+             count.innerText = `\${matchCount} matches`;
+          }
+        } catch(e: any) {
+          result.innerHTML = `<span class="text-red-400">Error: \${e.message}</span>`;
+          count.innerText = 'Error';
+        }
+      };
+
+      [pattern, flags, testText].forEach(el => el.addEventListener('input', updateMatch));
+      testText.value = "Test your email addresses:\nhello@world.com\ninvalid-email\ntest.user123@domain.org";
+      updateMatch();
+    }
+  },
+
+  // --- LOREM IPSUM GENERATOR ---
+  'lorem-gen': {
+    ui(): string {
+      return `
+        <div class="max-w-4xl mx-auto space-y-6 animate-fade-in-up">
+          <div class="glass-panel p-6 rounded-3xl flex flex-wrap gap-6 items-center bg-black/10">
+            <div class="flex items-center gap-4">
+               <label class="font-bold text-[var(--text-secondary)] uppercase text-xs tracking-wider">Paragraphs</label>
+               <input type="number" id="lorem-count" value="3" min="1" max="50" class="glass-input w-24 p-3 rounded-xl font-bold text-center">
+            </div>
+            <button id="lorem-btn" class="px-6 py-3 rounded-xl bg-amber-600 hover:bg-amber-500 text-white font-bold shadow-lg transition-transform active:scale-95">Generate</button>
+            <button id="lorem-copy" class="px-6 py-3 rounded-xl glass-panel hover:bg-white/10 font-bold transition-transform active:scale-95 ml-auto">Copy Text</button>
+          </div>
+          <textarea id="lorem-out" readonly class="glass-input w-full h-80 p-6 rounded-3xl text-lg leading-relaxed bg-black/5 dark:bg-black/20 resize-none font-serif text-[var(--text-primary)]"></textarea>
+        </div>
+      `;
+    },
+    init() {
+      const countEl = document.getElementById('lorem-count') as HTMLInputElement;
+      const outEl = document.getElementById('lorem-out') as HTMLTextAreaElement;
+      
+      const words = ["lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua", "enim", "ad", "minim", "veniam", "quis", "nostrud", "exercitation", "ullamco", "laboris", "nisi", "ut", "aliquip", "ex", "ea", "commodo", "consequat", "duis", "aute", "irure", "dolor", "in", "reprehenderit", "in", "voluptate", "velit", "esse", "cillum", "dolore", "eu", "fugiat", "nulla", "pariatur", "excepteur", "sint", "occaecat", "cupidatat", "non", "proident", "sunt", "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"];
+      
+      const genParagraph = () => {
+        let p = "";
+        const length = 20 + Math.random() * 30;
+        for (let i = 0; i < length; i++) {
+          let word = words[Math.floor(Math.random() * words.length)];
+          if (i === 0) word = word.charAt(0).toUpperCase() + word.slice(1);
+          p += word + (i === length - 1 ? "." : " ");
+        }
+        return p;
+      };
+
+      const generate = () => {
+        const pCount = parseInt(countEl.value) || 1;
+        let text = "";
+        for (let i = 0; i < pCount; i++) text += genParagraph() + (i < pCount - 1 ? "\n\n" : "");
+        outEl.value = text;
+      };
+
+      document.getElementById('lorem-btn')!.onclick = generate;
+      document.getElementById('lorem-copy')!.onclick = () => {
+        navigator.clipboard.writeText(outEl.value).then(() => {
+          (window as any).Swal.fire({icon:'success', title: 'Copied', text: 'Lorem Ipsum copied to clipboard', timer: 1500, showConfirmButton: false});
+        });
+      };
+      
+      generate();
+    }
+  },
+
+  // --- MARKDOWN PREVIEW ---
+  'markdown-view': {
+    ui(): string {
+      return `
+        <div class="flex flex-col md:flex-row gap-6 h-[600px] animate-fade-in-up">
+          <div class="flex-1 flex flex-col space-y-2">
+             <label class="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Markdown Editor</label>
+             <textarea id="md-in" class="glass-input flex-1 p-6 rounded-2xl font-mono text-sm resize-none border-transparent focus:border-sky-500" placeholder="# Hello World\n\nWrite your **markdown** here..."></textarea>
+          </div>
+          <div class="flex-1 flex flex-col space-y-2">
+             <label class="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Live Preview</label>
+             <div id="md-out" class="glass-panel flex-1 p-8 rounded-2xl overflow-y-auto bg-white dark:bg-zinc-900 text-black dark:text-white prose prose-blue max-w-none shadow-inner border border-zinc-200 dark:border-zinc-800"></div>
+          </div>
+        </div>
+      `;
+    },
+    init() {
+      loadMarked().then(() => {
+        const mdIn = document.getElementById('md-in') as HTMLTextAreaElement;
+        const mdOut = document.getElementById('md-out') as HTMLElement;
+        
+        const renderMD = () => {
+          if (window.marked) {
+            mdOut.innerHTML = window.marked.parse(mdIn.value || '# Title\n\nStart typing...');
+          }
+        };
+        
+        mdIn.addEventListener('input', renderMD);
+        mdIn.value = "# Welcome to Markdown\n\n- Write **bold** text\n- Create [links](https://hemanthnanu-tech.github.io/HemiToolkit)\n- Add code blocks:\n\n```js\nconsole.log('Hello World');\n```";
+        renderMD();
+      });
+    }
+  },
+
+  // --- TEXT DIFF CHECKER ---
+  'text-diff': {
+    ui(): string {
+      return `
+        <div class="max-w-6xl mx-auto flex flex-col h-[600px] animate-fade-in-up space-y-6">
+          <div class="flex gap-6 h-1/2">
+            <textarea id="diff-1" class="glass-input flex-1 p-4 rounded-xl resize-none text-sm font-mono" placeholder="Original Text..."></textarea>
+            <textarea id="diff-2" class="glass-input flex-1 p-4 rounded-xl resize-none text-sm font-mono" placeholder="Modified Text..."></textarea>
+          </div>
+          <div class="flex justify-center">
+             <button id="btn-diff" class="px-8 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold shadow-lg shadow-rose-500/20 active:scale-95 transition-all cursor-pointer">Compare Texts</button>
+          </div>
+          <div class="glass-panel flex-1 p-6 rounded-xl overflow-y-auto font-mono text-sm whitespace-pre-wrap flex gap-6" id="diff-out"></div>
+        </div>
+      `;
+    },
+    init() {
+      const t1 = document.getElementById('diff-1') as HTMLTextAreaElement;
+      const t2 = document.getElementById('diff-2') as HTMLTextAreaElement;
+      const btn = document.getElementById('btn-diff') as HTMLButtonElement;
+      const out = document.getElementById('diff-out') as HTMLElement;
+
+      btn.onclick = () => {
+        // Very simple diff side-by-side rendering
+        if (t1.value === t2.value) {
+           out.innerHTML = '<div class="w-full text-center text-green-500 font-bold p-10 text-xl">Files are identical.</div>';
+           return;
+        }
+
+        out.innerHTML = `
+            <div class="flex-1 p-4 rounded bg-red-500/5 border border-red-500/20 text-[var(--text-primary)] relative">
+                <div class="absolute top-0 right-0 bg-red-500 text-white text-xs px-2 py-1 rounded-bl">Original</div>
+                \${t1.value.replace(/</g, '&lt;')}
+            </div>
+            <div class="flex-1 p-4 rounded bg-green-500/5 border border-green-500/20 text-[var(--text-primary)] relative">
+                <div class="absolute top-0 right-0 bg-green-500 text-white text-xs px-2 py-1 rounded-bl">Modified</div>
+                \${t2.value.replace(/</g, '&lt;')}
+            </div>`;
+      };
+      
+      t1.value = "function hello() {\n  console.log('world');\n}";
+      t2.value = "function hello() {\n  console.log('Hemi Toolkit');\n}";
+    }
   }
 };
+
+
