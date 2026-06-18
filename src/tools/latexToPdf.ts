@@ -89,7 +89,7 @@ export const latexToPdfTool = {
     const updatePreview = debounce(() => {
       // Basic formatting to support paragraphs
       let html = txt.value.replace(/\n\n/g, '<br><br>');
-      prev.innerHTML = `<style>\${printStyles}</style><div id="math-content">\${html}</div>`;
+      prev.innerHTML = `<style>${printStyles}</style><div id="math-content">${html}</div>`;
       fitPreview();
       
       if ((window as any).MathJax) {
@@ -132,11 +132,11 @@ export const latexToPdfTool = {
           <head>
               <meta charset="UTF-8">
               <title>Print Document</title>
-              <style>\${printStyles}</style>
+              <style>${printStyles}</style>
               <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"><\/script>
           </head>
           <body>
-              <div id="print-content">\${htmlContent}</div>
+              <div id="print-content">${htmlContent}</div>
               <script>
                 window.onload = function() {
                   MathJax.typesetPromise().then(function() {
