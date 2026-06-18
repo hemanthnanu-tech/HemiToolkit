@@ -415,16 +415,16 @@ export const utilityTools = {
           if (!re.global) {
              const m = txt.match(re);
              const matchCount = m ? 1 : 0;
-             result.innerHTML = txt.replace(re, (match) => `<span class="bg-fuchsia-500/30 text-fuchsia-300 rounded px-1">\${match}</span>`);
-             count.innerText = `\${matchCount} matches`;
+             result.innerHTML = txt.replace(re, (match) => `<span class="bg-fuchsia-500/30 text-fuchsia-300 rounded px-1">${match}</span>`);
+             count.innerText = `${matchCount} matches`;
           } else {
              const matches = txt.match(re);
              const matchCount = matches ? matches.length : 0;
-             result.innerHTML = txt.replace(re, (match) => `<span class="bg-fuchsia-500/30 text-fuchsia-300 rounded px-1">\${match}</span>`);
-             count.innerText = `\${matchCount} matches`;
+             result.innerHTML = txt.replace(re, (match) => `<span class="bg-fuchsia-500/30 text-fuchsia-300 rounded px-1">${match}</span>`);
+             count.innerText = `${matchCount} matches`;
           }
         } catch(e: any) {
-          result.innerHTML = `<span class="text-red-400">Error: \${e.message}</span>`;
+          result.innerHTML = `<span class="text-red-400">Error: ${e.message}</span>`;
           count.innerText = 'Error';
         }
       };

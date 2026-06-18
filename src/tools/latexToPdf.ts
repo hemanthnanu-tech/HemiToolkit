@@ -76,9 +76,9 @@ export const latexToPdfTool = {
       const availableWidth = container.offsetWidth - 32;
       if (availableWidth < targetWidth) {
         const scale = availableWidth / targetWidth;
-        prev.style.transform = `scale(\${scale})`;
+        prev.style.transform = `scale(${scale})`;
         prev.style.height = '1123px';
-        container.style.height = `\${(1123 * scale) + 40}px`;
+        container.style.height = `${(1123 * scale) + 40}px`;
       } else {
         prev.style.transform = 'none';
         container.style.height = 'auto';
@@ -133,7 +133,6 @@ export const latexToPdfTool = {
               <meta charset="UTF-8">
               <title>Print Document</title>
               <style>\${printStyles}</style>
-              <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"><\/script>
               <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"><\/script>
           </head>
           <body>

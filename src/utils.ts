@@ -40,7 +40,7 @@ export function loadScript(src: string): Promise<void> {
 
 // Lazy Load helper hooks
 export async function loadPdfLib(): Promise<any> {
-  await loadScript('https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js');
+  await loadScript('https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js');
   return window.PDFLib;
 }
 
