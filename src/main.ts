@@ -64,11 +64,11 @@ const tools: ToolDefinition[] = [
 
 // Theme Switcher manager module
 const themeManager = {
-  modes: ['dark', 'light', 'oled'],
-  icons: { dark: 'fa-moon', light: 'fa-sun', oled: 'fa-circle' },
+  modes: ['light', 'dark', 'oled'],
+  icons: { light: 'fa-sun', dark: 'fa-moon', oled: 'fa-circle' },
 
   init() {
-    this.set(localStorage.getItem('hemi_theme') || 'dark');
+    this.set(localStorage.getItem('hemi_theme') || 'light');
   },
 
   set(mode: string) {
@@ -97,7 +97,7 @@ const themeManager = {
   },
 
   toggle() {
-    const current = localStorage.getItem('hemi_theme') || 'dark';
+    const current = localStorage.getItem('hemi_theme') || 'light';
     const index = this.modes.indexOf(current);
     const next = this.modes[(index + 1) % this.modes.length];
     this.set(next);
@@ -275,7 +275,7 @@ function renderDashboard(filter = 'all') {
         <div class="w-12 h-12 rounded-2xl ${t.color} flex items-center justify-center text-white text-xl shadow-xl">
           <i class="${t.icon}"></i>
         </div>
-        <div class="w-8 h-8 rounded-full bg-black/10 dark:bg-white/5 flex items-center justify-center text-[var(--text-secondary)] group-hover:bg-white/10 group-hover:text-white transition-all duration-300">
+        <div class="w-8 h-8 rounded-full bg-black/10 dark:bg-white/5 flex items-center justify-center text-[var(--text-secondary)] group-hover:bg-blue-500/10 group-hover:text-blue-500 group-hover:scale-110 transition-all duration-300">
           <i class="fa-solid fa-arrow-right -rotate-45 group-hover:rotate-0 transition-transform"></i>
         </div>
       </div>
@@ -371,7 +371,7 @@ function configureSearch() {
             <div class="w-12 h-12 rounded-2xl ${t.color} flex items-center justify-center text-white text-xl shadow-xl">
               <i class="${t.icon}"></i>
             </div>
-            <div class="w-8 h-8 rounded-full bg-black/10 dark:bg-white/5 flex items-center justify-center text-[var(--text-secondary)] group-hover:bg-white/10 group-hover:text-white transition-all duration-300">
+            <div class="w-8 h-8 rounded-full bg-black/10 dark:bg-white/5 flex items-center justify-center text-[var(--text-secondary)] group-hover:bg-blue-500/10 group-hover:text-blue-500 group-hover:scale-110 transition-all duration-300">
               <i class="fa-solid fa-arrow-right -rotate-45 group-hover:rotate-0 transition-transform"></i>
             </div>
           </div>

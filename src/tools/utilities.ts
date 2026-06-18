@@ -250,8 +250,8 @@ export const utilityTools = {
   'json-fmt': {
     ui(): string {
       return `
-        <div class="flex flex-col md:flex-row gap-6 h-[550px] animate-fade-in-up">
-          <div class="flex-1 flex flex-col">
+        <div class="flex flex-col md:flex-row gap-6 md:h-[550px] min-h-[500px] animate-fade-in-up">
+          <div class="flex-1 flex flex-col min-h-[250px] md:min-h-0">
             <div class="flex justify-between items-center mb-2">
               <label class="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider" for="json-in">Raw JSON Input</label>
               <button id="clear-json" class="text-xs text-red-400 hover:text-red-300 transition-colors font-semibold select-none">Clear</button>
@@ -324,8 +324,8 @@ export const utilityTools = {
   'base64-tool': {
     ui(): string {
       return `
-        <div class="flex flex-col md:flex-row gap-6 h-[500px] animate-fade-in-up">
-          <div class="flex-1 flex flex-col">
+        <div class="flex flex-col md:flex-row gap-6 md:h-[500px] min-h-[500px] animate-fade-in-up">
+          <div class="flex-1 flex flex-col min-h-[200px] md:min-h-0">
             <div class="flex justify-between items-center mb-2">
               <label class="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Plain Text</label>
               <button id="b64-clear1" class="text-xs text-red-400 hover:text-red-300 font-semibold transition-colors">Clear</button>
@@ -491,8 +491,8 @@ export const utilityTools = {
   'markdown-view': {
     ui(): string {
       return `
-        <div class="flex flex-col md:flex-row gap-6 h-[600px] animate-fade-in-up">
-          <div class="flex-1 flex flex-col space-y-2">
+        <div class="flex flex-col md:flex-row gap-6 md:h-[600px] min-h-[600px] animate-fade-in-up">
+          <div class="flex-1 flex flex-col space-y-2 min-h-[250px] md:min-h-0">
              <label class="text-sm font-bold text-[var(--text-secondary)] uppercase tracking-wider">Markdown Editor</label>
              <textarea id="md-in" class="glass-input flex-1 p-6 rounded-2xl font-mono text-sm resize-none border-transparent focus:border-sky-500" placeholder="# Hello World\n\nWrite your **markdown** here..."></textarea>
           </div>
@@ -525,10 +525,10 @@ export const utilityTools = {
   'text-diff': {
     ui(): string {
       return `
-        <div class="max-w-6xl mx-auto flex flex-col h-[600px] animate-fade-in-up space-y-6">
-          <div class="flex gap-6 h-1/2">
-            <textarea id="diff-1" class="glass-input flex-1 p-4 rounded-xl resize-none text-sm font-mono" placeholder="Original Text..."></textarea>
-            <textarea id="diff-2" class="glass-input flex-1 p-4 rounded-xl resize-none text-sm font-mono" placeholder="Modified Text..."></textarea>
+        <div class="max-w-6xl mx-auto flex flex-col md:h-[600px] min-h-[600px] animate-fade-in-up space-y-6">
+          <div class="flex gap-6 h-1/2 flex-col md:flex-row">
+            <textarea id="diff-1" class="glass-input flex-1 p-4 rounded-xl resize-none text-sm font-mono min-h-[150px] md:min-h-0" placeholder="Original Text..."></textarea>
+            <textarea id="diff-2" class="glass-input flex-1 p-4 rounded-xl resize-none text-sm font-mono min-h-[150px] md:min-h-0" placeholder="Modified Text..."></textarea>
           </div>
           <div class="flex justify-center">
              <button id="btn-diff" class="px-8 py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold shadow-lg shadow-rose-500/20 active:scale-95 transition-all cursor-pointer">Compare Texts</button>
